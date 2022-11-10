@@ -1,0 +1,22 @@
+body::before{
+    display:block;
+    content: "";
+    height: 30px;
+}
+.navbar{
+    color: #E7F2F4;
+}
+li{
+    color:aqua;
+}
+body{
+    background-image: url(images/urban-landscape-background\ 2.png);
+    width: 100vw;
+    height: 100vh;
+}
+.card{
+    background-color:#a0b19d;
+}
+.btn{
+    background-color: aquamarine;
+}

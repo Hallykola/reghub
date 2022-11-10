@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loginbackend-deployment
+spec:
+  selector:
+    matchLabels:
+      app: loginbackend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: loginbackend
+    spec:
+      containers:
+      - name: loginbackend
+        image: loginbackend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        env:
+          - configMapRef:
+              name: database
+        env:
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mysecret
+                key: database_user
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysecret
+                key: database_password
+          - name: SECRET_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: database
+                key: database_url
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  # type: LoadBalancer
+  selector:
+    app: loginbackend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000

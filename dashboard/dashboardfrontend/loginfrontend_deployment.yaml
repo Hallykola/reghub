@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loginfrontend-deployment
+  namespace: ingress-nginx
+spec:
+  selector:
+    matchLabels:
+      app: loginfrontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: loginfrontend
+    spec:
+      containers:
+      - name: loginfrontend
+        image: loginfrontend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        # env:
+        #   - configMapRef:
+        #       name: database
+        # env:
+        #   - name: DB_USERNAME
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: mysecret
+        #         key: database_user
+        #   - name: DB_PASSWORD
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: mysecret
+        #         key: database_password
+        #   - name: SECRET_PASSWORD
+        #     valueFrom:
+        #       configMapKeyRef:
+        #         name: database
+        #         key: database_url
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-service
+  namespace: ingress-nginx
+spec:
+  # type: LoadBalancer
+  selector:
+    app: loginfrontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000

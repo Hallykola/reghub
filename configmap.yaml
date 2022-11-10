@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database
+data:
+  # property-like keys; each key maps to a simple value
+  database_url: database-2.cgegcnmnh3ul.us-east-1.rds.amazonaws.com

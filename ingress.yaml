@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: reghub-ingress
+spec:
+  # tls:
+  # - hosts:
+  #   - cafe.example.com
+  #   secretName: cafe-secret
+  rules:
+  - host: reghub.com
+    http:
+      paths:
+      - path: /login
+        pathType: Prefix
+        backend:
+          service:
+            name: front-service
+            port:
+              number: 80
+      - path: /loginbackend
+        pathType: Prefix
+        backend:
+          service:
+            name: my-service
+            port:
+              number: 80
