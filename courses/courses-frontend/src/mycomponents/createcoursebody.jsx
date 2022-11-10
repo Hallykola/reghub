@@ -8,17 +8,7 @@ import GroupTile from './grouptile';
 class CreateCourseBody extends Component {
    mymap = new Map();
     state = {  myform:{} , s:[], groupingmap:{}} ;
-    login(){
-      const baseURL = "http://localhost:8003/auth/login?name=hally&email=hkyusuf@unilag.edu.ng5&password=loveme";
-      axios.get(baseURL).then((response) => {
-        console.log(response);
-        toast(response.data.user["email"]);
-        toast(response.data.token);
-        
-      });
-      
-      // window.location.href = '/'
-    }
+    
 
     handleSubmit = (e)=>{
       e.preventDefault();
@@ -40,7 +30,7 @@ class CreateCourseBody extends Component {
         // toast(response.data.token);
         // localStorage.setItem('token',response.data.token);
         // window.location.href = '/'
-    
+
       }).catch((e)=>{
         console.log(e.response);
         // window.location.href = '/'
