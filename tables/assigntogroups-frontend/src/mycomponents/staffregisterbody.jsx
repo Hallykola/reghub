@@ -80,12 +80,12 @@ class StaffRegisterbody extends Component {
         var myform = {...this.state.myform};
     
           myform[index][e.target.name] = e.target.value;
-          console.log('hallybobo1',Object.values(myform));
+          console.log('halbobo1',Object.values(myform));
         this.setState({myform:Object.values(myform)},()=>{
          
           //  this.props.sendvalues(this.state.myform)
          
-          console.log('hallybobo',this.state.myform)});
+          console.log('bobo',this.state.myform)});
    
     }
     componentDidMount(){

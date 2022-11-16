@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 class StudentRegisterBody extends Component {
-    state = {stage:1,myform:{}, course:'PHS220' } ;
+    state = {stage:1,myform:{}, course:'Temi 123' } ;
     atoken = localStorage.getItem('token');
     
     handleSubmit1 = (e)=>{
