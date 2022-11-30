@@ -18,10 +18,10 @@ class HomeBody extends Component {
         <div className="container">
             <div className="row text-center g-4">
                 <div className="col-md">
-                    <a href="/listcourses"> <img class="stud img-fluid w-50" src="images/student.png"/></a>
+                    <a href="/listcourses"> View Courses<img class="stud img-fluid w-50" src="images/student.png"/></a>
                 </div>
                 <div className="col-md">
-                    <a href="/createcourse"><img class="staff img-fluid w-50" src="images/staff.png"/></a>
+                    <a href="/createcourse">Create New Course<img class="staff img-fluid w-50" src="images/staff.png"/></a>
                 </div>
                 </div>
                 </div>

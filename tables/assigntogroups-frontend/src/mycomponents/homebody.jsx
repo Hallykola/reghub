@@ -21,7 +21,7 @@ class HomeBody extends Component {
                     <a href="/studentlogin"> <img class="stud img-fluid w-50" src="images/student.png"/></a>
                 </div>
                 <div className="col-md">
-                    <a href="/stafflogin"><img class="staff img-fluid w-50" src="images/staff.png"/></a>
+                    <a href="/staffregister">View Tables<img class="staff img-fluid w-50" src="images/staff.png"/></a>
                 </div>
                 </div>
                 </div>

@@ -18,7 +18,7 @@ class HomeBody extends Component {
         <div className="container">
             <div className="row text-center g-4">
                 <div className="col-md">
-                    <a href="/studentlogin"> <img class="stud img-fluid w-50" src="images/student.png"/></a>
+                    <a href="/studentregister"> Register Student <img class="stud img-fluid w-50" src="images/student.png"/></a>
                 </div>
                 <div className="col-md">
                     <a href="/stafflogin"><img class="staff img-fluid w-50" src="images/staff.png"/></a>

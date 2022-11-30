@@ -6,7 +6,7 @@ class Navbar extends Component {
         return (
             <nav className="navbar navbar-expand-lg bg-light fixed-top navbar-light mb-5">
             <div class="container">
-                <a href="/" className="navbar-brand text-success fw-bold"> RegHub</a>
+                <a href="/" className="navbar-brand text-success fw-bold"> RegHub Courses</a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
                 <span class="navbar-toggler-icon"></span>
                 </button>
