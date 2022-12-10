@@ -13,7 +13,7 @@ class ViewEditCourseBody extends Component {
     handleSubmit = (e)=>{
       e.preventDefault();
       var atoken = localStorage.getItem('token');
-      const baseURL = "http://localhost:8002/course/edit/" ; //process.env.REACT_APP_COURSE_BACKEND ;
+      const baseURL =  process.env.REACT_APP_COURSE_BACKEND_EDIT ;
 
       const {course,info, more} = this.state.myform;
       const { groupingmap} = this.state

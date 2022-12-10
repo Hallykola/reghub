@@ -65,7 +65,7 @@ class StaffLoginBody extends Component {
                 <section className="showcase mt-2">
     <section className="p-5">
         <div className="container shadow-lg rounded bg-white px-5">
-            <p className="pere text-secondary fs-3 text-warning pt-4 px-3 fw-bold">Staff Login</p>
+            <p className="pere text-secondary fs-3 text-warning pt-4 px-3 fw-bold">Forgot Password</p>
             <form onSubmit={this.handleSubmit} className="row g-3 text-secondary">
                 <div className="col-md-5 p-4">
                   <label for="inputemail" className="form-label fw-bold" >Email</label>

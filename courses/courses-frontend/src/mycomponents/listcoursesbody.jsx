@@ -18,7 +18,7 @@ class ListCoursesBody extends Component {
     getMyCourse=()=>{
         var atoken = localStorage.getItem('token');
         var data = {};
-    const baseURL = "http://localhost:8002/course/all" ; //process.env.REACT_APP_COURSE_BACKEND ;
+    const baseURL = process.env.REACT_APP_COURSE_BACKEND_ALL ;
 
     console.log(baseURL,data);
     axios.post(baseURL,data,{headers: {

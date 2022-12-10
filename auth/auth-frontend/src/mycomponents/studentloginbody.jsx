@@ -69,12 +69,12 @@ class StudentLoginBody extends Component {
                   <input type="text" className="form-control mb-4" id="inputemail" onChange={this.handleinput} name='email'/>
                   <label for="inputpassword" className="form-label fw-bold">Password</label>
                   <input type="password" className="form-control mb-3" id="inputpassword" onChange={this.handleinput} name='password'/>
-                  <div className="form-check">
+                  {/* <div className="form-check">
                     <input className="form-check-input" type="checkbox" id="gridCheck" onChange={this.handleinput} name='rememberme'/>
                     <label className="form-check-label mb-3" for="gridCheck" >
                       Remember Me
                     </label>
-                  </div>
+                  </div> */}
                   <a className="pass text-info text-decoration-none mb-5" href="">Forgot Password?</a>
                   <div>
                   <a className="pass text-info text-decoration-none mb-3" href="/studentregister">Register</a>
