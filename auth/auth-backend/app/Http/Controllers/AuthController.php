@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\StaffProfile;
 use App\Models\StudentProfile;
+use App\Http\Controllers\MailController;
 
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Hash;
@@ -104,6 +105,24 @@ class AuthController extends Controller
     }
 
 
+    //sendforgotpasswordmail
+    public function sendChangePasswordMail(){
+
+        //generate token and add to user column
+        $token = rand(10,100);
+
+        //send mail containing token
+         $mailCon = new MailController();
+        $mailCon->mail($token);
+
+
+
+    }
+
+    //changepassword
+    public function changePassword(){
+
+    }
 
     ////////////////////////////////////////
     public function RegisterStudent($request){

@@ -26,6 +26,8 @@ $app = new Laravel\Lumen\Application(
 $app->withFacades();
 
 $app->withEloquent();
+$app->configure('services');
+$app->configure('mail');
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +63,10 @@ $app->singleton(
 
 $app->configure('app');
 
+$app->configure('mail');
+
+$app->configure('services');
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -94,9 +100,14 @@ $app->routeMiddleware([
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+ $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+
+$app->register(\Illuminate\Auth\Passwords\PasswordResetServiceProvider::class);
+$app->register(\Illuminate\Mail\MailServiceProvider::class);
+
+$app->register(Illuminate\Notifications\NotificationServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

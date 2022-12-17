@@ -33,6 +33,6 @@ class Staffprofile extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('staffprofile');
+        Schema::dropIfExists('staffprofiles');
     }
 }

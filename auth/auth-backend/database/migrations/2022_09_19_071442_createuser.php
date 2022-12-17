@@ -19,6 +19,7 @@ class Createuser extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('token')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

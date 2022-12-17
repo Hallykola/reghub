@@ -28,3 +28,12 @@ $router->post('/auth/registerstudentforprofile','MyUsersController@RegisterStude
 
 $router->get('/auth',['middleware'=>'jwt.auth', 'uses'=>'AuthController@logout']);
 
+$router->get('send_email' ,'Mailcontroller@mail');
+$router->get('forgetpw' ,'AuthController@sendChangePasswordMail');
+
+$router->post('/password/reset-request', 'RequestPasswordController@sendResetLinkEmail');
+$router->post('/password/reset', [ 'as' => 'password.reset', 'uses' => 'ResetPasswordController@reset' ]);
+
+$router->post('/password/email', 'RequestPasswordController@sendResetLinkEmail');
+$router->post('/password/reset/{token}', 'PasswordController@postReset');
+
