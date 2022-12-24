@@ -36,7 +36,7 @@ class AssignController extends Controller
             return response()->json(['error'=> "User already registered to group ".$details->group.$details->number],406);
         }
 
-        $url = 'http://localhost:8002/course/pluckgroupnumber';
+        $url = 'http://host.docker.internal:8002/course/pluckgroupnumber';
         $curl_data = ['course' => $course,
         'feature' => $dept,
         ];
@@ -66,6 +66,7 @@ class AssignController extends Controller
         curl_close($ch);
 
         $result = json_decode($content);
+        
         if(property_exists( $result , "error" )){
             return response()->json(['error'=>"Could not get group number from courses", "errormessage"=>$result->error],404);
         }

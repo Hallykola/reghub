@@ -15,7 +15,9 @@ use App\Http\Controllers\AuthController;
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    dd(phpinfo());
+    return
+     $router->app->version();
 });
 $router->post('/auth/register','AuthController@register');
 $router->post('/auth/login','AuthController@login');

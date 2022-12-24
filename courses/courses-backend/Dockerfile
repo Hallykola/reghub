@@ -1,38 +1,17 @@
-FROM alpine:3.13
+FROM php:7.3-fpm-alpine
 
-# for laravel lumen run smoothly
-RUN apk --no-cache add \
-php7 \
-php7-fpm \
-php7-pdo \
-php7-mbstring \
-php7-openssl
+RUN docker-php-ext-install pdo_mysql
 
-# for our code run smoothly
-RUN apk --no-cache add \
-php7-json \
-php7-dom \
-curl \
-php7-curl
+WORKDIR /var/www/html/
 
-# for swagger run smoothly
-RUN apk --no-cache add \
-php7-tokenizer
+RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
 
-# for composer & our project depency run smoothly
-RUN apk --no-cache add \
-php7-phar \
-php7-xml \
-php7-xmlwriter
 
-# if need composer to update plugin / vendor used
-RUN php7 -r "copy('http://getcomposer.org/installer', 'composer-setup.php');" && \
-php7 composer-setup.php --install-dir=/usr/bin --filename=composer && \
-php7 -r "unlink('composer-setup.php');"
 
 # copy all of the file in folder to /src
 COPY . /src
 WORKDIR /src
+
 
 RUN echo "hello there"
 RUN echo $WORKDIR

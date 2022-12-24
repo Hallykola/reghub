@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+body::before{
+  display:block;
+  content: "";
+  height: 30px;
+}
+.navbar{
+  color: #E7F2F4;
+}
+li{
+  color:aqua;
+}
+body{
+  background-image: url(../public/images/urban-landscape-background\ 2.png);
+  width: 100vw;
+  height: 100vh;
+}
+.card{
+  background-color:#a0b19d;
+}
+.btn{
+  background-color: aquamarine;
+}
