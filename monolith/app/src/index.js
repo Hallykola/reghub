@@ -18,6 +18,7 @@ import ViewEditCourse from './vieweditcourse';
 import CreateCourse from './createcourse';
 import ListCourses from './listcourses';
 import RegisteraStudent from './registerastudent';
+import ManageGroups from './managegroups';
 
 
 
@@ -42,7 +43,7 @@ root.render(
       <Route path="/listCourses" element={<ListCourses user = {user}/>} />
       
       <Route path="/registerstudent/:course" element={<RegisteraStudent/>} />
-
+      <Route path="/managegroups/:course/:group" element={<ManageGroups/>} />
 
     </Routes>
     </BrowserRouter>

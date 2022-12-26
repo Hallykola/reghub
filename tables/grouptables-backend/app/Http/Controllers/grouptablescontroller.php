@@ -11,14 +11,15 @@ class GroupTablesController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        //
-    }
+    // public function __construct()
+    // {
+    //     //
+    // }
 
     //
-    public function read(Request $request,$course,$group){
-
+     function read(Request $request,$course,$group){
+        // $group= 'A';
+        // $course = 'PHS220';
         $therow = GroupTable::where([["group","=",$group],["course","=",$course]])->get();
 
         if ($therow ==null || sizeof($therow)==0 ){
@@ -28,7 +29,7 @@ class GroupTablesController extends Controller
 
     }
 
-    public function readskip(Request $request,$course,$group,$skip,$take){
+     function readskip(Request $request,$course,$group,$skip,$take){
         $therow = GroupTable::where([["group","=",$group],["course","=",$course]])->skip($skip)->take($take)->get();
         if ($therow ==null || sizeof($therow)==0 ){
             return response()->json(["response"=>"group not found"],404);
@@ -36,7 +37,7 @@ class GroupTablesController extends Controller
         return response()->json(["response"=>$therow],200);
     }
 
-    public function readone($course,$group,$groupno){
+     function readone($course,$group,$groupno){
 
         $therow = GroupTable::where([["group","=",$group],["groupno","=",$groupno],["course","=",$course]])->get();
 
@@ -47,7 +48,7 @@ class GroupTablesController extends Controller
 
     }
 
-    public function create(Request $request){
+     function create(Request $request){
         $group= $request->group;
         //$groupno = $request->groupno;
         $course = $request->course;
@@ -79,7 +80,7 @@ class GroupTablesController extends Controller
         return response()->json(["response"=>"tables created"],201);
     }
 
-    public function update(Request $request){
+     function update(Request $request){
         $group= $request->group;
         $course = $request->course;
         $data = $request->data;
@@ -118,7 +119,7 @@ class GroupTablesController extends Controller
     }
 
 
-    public function updated (Request $request){
+     function updated (Request $request){
         $group= $request->group;
         $course = $request->course;
         $data = $request->data;
@@ -158,7 +159,7 @@ class GroupTablesController extends Controller
         return response()->json(["response"=>"tables updated "],201);
     }
 
-    public function newupdated (Request $request){
+     function newupdated (Request $request){
         try{
         $data = $request->data;
         $some= [];
@@ -236,7 +237,7 @@ class GroupTablesController extends Controller
         return response()->json(["response"=>"tables updated "],201);
     }
 
-    public function delete(Request $request){
+     function delete(Request $request){
         $group= $request->group;
         $groupno = $request->groupno;
         $course = $request->course;

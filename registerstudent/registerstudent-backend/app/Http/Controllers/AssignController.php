@@ -66,14 +66,17 @@ class AssignController extends Controller
         curl_close($ch);
 
         $result = json_decode($content);
-        
+
         if(property_exists( $result , "error" )){
             return response()->json(['error'=>"Could not get group number from courses", "errormessage"=>$result->error],404);
         }
 
         //server may return error handle it here todo
 
-
+        //if license could not be validated/used
+        if(!useLicense($license)){
+            return response()->json(['error'=>'Could not register student to group', 'message'=>'License has been used or is license is not valid'],201);
+        }
         $grouping = Grouping::create(['userid'=>$userid, 'course'=>$course, 'group'=> $result->group, 'number'=> $result->number]);
         return response()->json(['grouping'=>$grouping],201);
 
@@ -93,6 +96,47 @@ class AssignController extends Controller
 
 
     //
+
+    function isLicenseValidnUnused(Request $request){
+        $license = $request->license;
+        $url = 'http://host.docker.internal:8002/wp-json/lmfwc/v2/licenses/validate/'.$license;
+        $mycurl = new MyCurl();
+        $response = $mycurl->visit($url);
+
+        if (isset($response->data->status)&&$response->data->status == 404){
+            return response()->json(['status'=>false, 'message'=>'License is not valid'],201);
+        }
+
+
+        if (isset($response->data->remainingActivations)&&$response->data->timesActivated ==0 && $response->success==1){
+            return response()->json(['status'=>true, 'message'=>'License is valid'],201);
+        }
+        else{
+            return response()->json(['status'=>false, 'message'=>'License has been used'],201);
+
+        }
+        // print_r([$response->success,$response->data->timesActivated,$response->data->remainingActivations]);
+
+    }
+
+    function useLicense($license){
+
+        $url = 'http://host.docker.internal:8002/wp-json/lmfwc/v2/licenses/activate/'.$license;
+        $mycurl = new MyCurl();
+        $response = $mycurl->visit($url);
+
+        if (isset($response->data->status)&&$response->data->status == 404){
+            return false;
+            // return response()->json(['status'=>false, 'message'=>'License is not valid or has been used'],201);
+        }
+        if (isset($response->data->status)&&$response->data->status > 0&& $response->success==1){
+            return true;
+            // return response()->json(['status'=>true, 'message'=>'License is just validated and now used'],201);
+        }
+
+
+
+    }
 }
 
 
@@ -164,6 +208,25 @@ class GroupOrganizer{
 
     }
     public function deletemember(){
+
+    }
+}
+
+class MyCurl{
+    public static function visit($url){
+        // $url = 'http://host.docker.internal:8002/course/pluckgroupnumber';
+
+        $cURLConnection = curl_init();
+
+        curl_setopt($cURLConnection, CURLOPT_URL, $url."?consumer_key=ck_2b682ca7f22a9ec17539a62cddad2169a7f6f3a8&consumer_secret=cs_964e7d8381ffe4c6694d30c942f956e805b14650");
+        curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
+
+        $content = curl_exec($cURLConnection);
+        curl_close($cURLConnection);
+
+
+        $result = json_decode($content);
+        return $result;
 
     }
 }

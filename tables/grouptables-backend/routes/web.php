@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GroupTablesController;
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 /*
@@ -17,7 +18,7 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('/grouptables/{course}/{group}/','GroupTablesController@read');
+$router->get('/grouptables/{course}/{group}','GroupTablesController@read');
 $router->get('/grouptables/{course}/{group}/{skip}/{take}','GroupTablesController@readskip');
 
 $router->get('/grouptables/{course}/{group}/{groupno}','GroupTablesController@readone');

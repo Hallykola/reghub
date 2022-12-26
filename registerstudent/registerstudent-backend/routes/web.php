@@ -22,4 +22,10 @@ $router->post('/course','AssignController@create');
 $router->put('/course','AssignController@update');
 $router->delete('/course','AssignController@delete');
 
+$router->get('/checklicense','AssignController@isLicenseValidnUnused');
+$router->get('/uselicense','AssignController@useLicense');
+
+
+
+
 // ['middleware'=>'jwt.auth', 'uses'=>'AuthController@create']
