@@ -26,14 +26,22 @@ class StaffLoginBody extends Component {
        
         toast("User logged in");
          toast(response.data.token);
+
         localStorage.setItem('token',response.data.token);
-        window.location.href = '/staffdashboard'
+          if (response.data.profile.matricnumber==null){
+            window.location.href = '/staffdashboard'
+          }else{
+             window.location.href = '/studentdashboard'
+          }
+        // window.location.href = '/staffdashboard'
     
       }).catch((e)=>{
         console.log(e.response);
         // window.location.href = '/'
         if(e.response.data['error']){
           toast(e.response.data['error']);
+        }else if(e.response.status==500){
+          toast(e.response.data['message']);
         }else{
           for (let a in e.response.data){
             toast(e.response.data[a.toString()][0]);

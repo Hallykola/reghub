@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\GroupTable;
+
 use Illuminate\Http\Request;
 
 class GroupTablesController extends Controller
@@ -18,8 +20,8 @@ class GroupTablesController extends Controller
 
     //
      function read(Request $request,$course,$group){
-        // $group= 'A';
-        // $course = 'PHS220';
+
+        $this->createrowifnotcreated ($course);
         $therow = GroupTable::where([["group","=",$group],["course","=",$course]])->get();
 
         if ($therow ==null || sizeof($therow)==0 ){
@@ -173,7 +175,7 @@ class GroupTablesController extends Controller
             if ($therow ==null || sizeof($therow)==0 ){
                 $values = array();
                 $values['group']=$group;
-                $values['groupno']= $mykey;
+                $values['groupno']= $groupno;//$mykey;
                 $values['course'] = $course;
                 GroupTable::create($values);
                 $therow = GroupTable::where([["group","=",$group],["groupno","=",$groupno],["course","=",$course]])->get();
@@ -193,6 +195,65 @@ class GroupTablesController extends Controller
 
          }
          return response()->json(["response"=>"tables updated ", "data"=>$data],201);
+        }catch(Error $e){
+            return response()->json(["error"=>$e]);
+        }
+
+    }
+
+    function createrowifnotcreated ($course){
+        try{
+        $mycurl = new MyCurl();
+        $response = $mycurl->visit('localhost:8002/course/'.$course.'/all-assigned');
+        //  print_r($response);
+           if($response==""||$response==null){
+
+            return;
+           }
+        // $val = $response->course[0]->assigned;
+         foreach ($response->course as $index => $courseobject){
+            // print_r($response);
+         foreach ($courseobject->assigned as $groupname => $groupnosarray) {
+            $course = $courseobject->course;
+            $group  = $groupname ;
+            $groupnos = $groupnosarray;
+            foreach($groupnos as $groupno){
+                // print_r($courseobject->course);
+                // print_r($group);
+                // print_r($groupno);
+                // print_r('/n');
+
+
+            $therow = GroupTable::where([["group","=",$group],["groupno","=",$groupno],["course","=",$course]])->get();
+            // print_r(sizeof($therow));
+            if ($therow ==null || sizeof($therow)==0 ){
+                $values = array();
+                $values['group']=$group;
+                $values['groupno']= $groupno;//$mykey;
+                $values['course'] = $course;
+                GroupTable::create($values);
+            //     $therow = GroupTable::where([["group","=",$group],["groupno","=",$groupno],["course","=",$course]])->get();
+            // //  }
+            //  //prepare mass insertion array
+
+            //  $values = array();
+            //  $columnarray = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+
+            //  foreach ($columnarray as $cell){
+            //  $values[$cell]= $agroup[$cell];
+            // //  array_push($some,$agroup[$cell]);
+            //  }
+
+            //  $therow->first()->update($values);
+            }
+        }
+
+        }
+    }
+        //  print_r($response);
+
+
         }catch(Error $e){
             return response()->json(["error"=>$e]);
         }
@@ -248,6 +309,25 @@ class GroupTablesController extends Controller
         return response()->json(["response"=>"row deleted ", "data"=>$deleted],200);
     }
     public function more(Request $request){
+
+    }
+}
+
+
+class MyCurl{
+    public static function visit($url){
+
+        $cURLConnection = curl_init();
+
+        curl_setopt($cURLConnection, CURLOPT_URL, $url);
+        curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
+
+        $content = curl_exec($cURLConnection);
+        curl_close($cURLConnection);
+
+
+        $result = json_decode($content);
+        return $result;
 
     }
 }

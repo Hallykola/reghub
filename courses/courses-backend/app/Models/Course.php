@@ -31,6 +31,7 @@ class Course extends Model implements AuthenticatableContract, AuthorizableContr
      * @var array
      */
     protected $hidden = [
-       "unassigned","assigned"
+       "unassigned"
+    //    ,"assigned"
     ];
 }

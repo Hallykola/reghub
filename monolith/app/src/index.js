@@ -19,11 +19,18 @@ import CreateCourse from './createcourse';
 import ListCourses from './listcourses';
 import RegisteraStudent from './registerastudent';
 import ManageGroups from './managegroups';
+import ListCoursesforReg from './listcoursesforreg';
+import StudentProfile from './studentprofile';
+import StaffProfile from './staffprofile';
+import ListGroups from './listgroups';
+import ViewMyGroup from './viewmygroup';
+import ViewMyGroupList from './viewmygrouplist';
 
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const user = getData();
+console.log('see me here',user);
 
 root.render(
   // <React.StrictMode>
@@ -34,6 +41,10 @@ root.render(
       <Route index element={<Home/>} />
       <Route path="/stafflogin" element={<StaffLogin />} />
       <Route path="/studentlogin" element={<StudentLogin/>} />
+
+      <Route path="/staffprofile" element={<StaffProfile  user = {user} />} />
+      <Route path="/studentprofile" element={<StudentProfile  user = {user} />} />
+
       <Route path="/studentregister" element={<StudentRegister/>} />
       <Route path="/staffregister" element={<StaffRegister/>} />
       <Route path="/studentdashboard" element={<StudentDash user = {user}/>} />
@@ -42,8 +53,13 @@ root.render(
       <Route path="/createcourse" element={<CreateCourse user = {user}/>} />
       <Route path="/listCourses" element={<ListCourses user = {user}/>} />
       
+      <Route path="/listgroups" element={<ListGroups user = {user}/>} />
+
+      <Route path="/registerstudent" element={<ListCoursesforReg user = {user}/>} />
       <Route path="/registerstudent/:course" element={<RegisteraStudent/>} />
       <Route path="/managegroups/:course/:group" element={<ManageGroups/>} />
+      <Route path="/viewgroup/:course/:group/:groupno" element={<ViewMyGroup/>} />
+      <Route path="/viewgroup" element={<ViewMyGroupList/>} />
 
     </Routes>
     </BrowserRouter>

@@ -22,8 +22,12 @@ $router->post('/course','AssignController@create');
 $router->put('/course','AssignController@update');
 $router->delete('/course','AssignController@delete');
 
-$router->get('/checklicense','AssignController@isLicenseValidnUnused');
-$router->get('/uselicense','AssignController@useLicense');
+$router->get('/course/getmycourses','AssignController@getmycourses');
+
+
+$router->get('/uselicense','AssignController@useLicenseRequest');
+
+
 
 
 

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\StaffProfile;
 use App\Models\StudentProfile;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\MyUsersController;
 
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Hash;
@@ -73,7 +74,9 @@ class AuthController extends Controller
             return response()->json(['error'=>'email or password is incorrect'],404);
         }
         if(Hash::check($request->password,$user->password)){
-            return response()->json(['user'=>$user, 'token'=>$this->jwt($user)],200);
+            $usercontroller = new MyUsersController();
+            $profile = $usercontroller->getUserProfileByEmail($request->email);
+            return response()->json(['user'=>$user, 'profile' => $profile,'token'=>$this->jwt($user)],200);
         }
         return response()->json(['error'=>'email or password is incorrect'],404);
 

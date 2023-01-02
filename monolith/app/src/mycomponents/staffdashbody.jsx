@@ -19,6 +19,9 @@ class StaffDashBody extends Component {
         <div class="container">
             <p class="per text-secondary fs-3 mb-5">Hello, <strong>{this.props.user.name}</strong></p>
             <div class="row text-center g-4">
+            <div class="col-md">
+                    <a href='/studentprofile'> <img class="stud img-fluid w-75" src="images/student profile.png"/></a>
+                </div>
                 <div class="col-md">
                     <a href='/registerstudent'> <img class="stud img-fluid w-75" src="images/reg a student.png" /></a>
                 </div>
@@ -26,7 +29,7 @@ class StaffDashBody extends Component {
                     <a href='listCourses'><img class="staff img-fluid w-75" src="images/create a course.png"/></a>
                 </div>
                 <div class="col-md">
-                    <a href='managegroups'><img class="staff img-fluid w-75" src="images/Assign to Group.png"/></a> 
+                    <a href='listgroups'><img class="staff img-fluid w-75" src="images/Assign to Group.png"/></a> 
                 </div>
                 <div class="col-md">
                     <a href='/notice'><img class="staff img-fluid w-75" src="images/create a notice.png"/></a>

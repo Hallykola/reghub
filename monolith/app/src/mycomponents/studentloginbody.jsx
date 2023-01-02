@@ -27,7 +27,12 @@ class StudentLoginBody extends Component {
       toast("User logged in");
        toast(response.data.token);
       localStorage.setItem('token',response.data.token);
-      window.location.href = '/studentdashboard'
+      if (response.data.profile.matricnumber==null){
+        window.location.href = '/staffdashboard'
+      }else{
+         window.location.href = '/studentdashboard'
+      }
+      // window.location.href = '/studentdashboard'
   
     }).catch((e)=>{
       console.log(e.response);

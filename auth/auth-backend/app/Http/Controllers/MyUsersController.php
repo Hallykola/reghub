@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Models\StudentProfile;
+use App\Models\StaffProfile;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,6 +30,17 @@ class MyUsersController extends BaseController
             return response()->json(['error'=>'User profile does not exist']);
         }
         return response()->json(['profile'=>$profile]);
+    }
+    public function getUserProfileByEmail($email){
+
+        $profile = StaffProfile::where([['email',$email]
+        // ,['matricnumber',$request->matricnumber]
+        ])->get()->first();
+        if($profile == null){
+            $profile = StudentProfile::where([['email',$email]
+        ])->get()->first();
+        }
+        return $profile;
     }
     public function registerStudentforProfile(Request $request){
         $this->validate($request, [

@@ -5,6 +5,7 @@ use App\Models\Ownership;
 use Illuminate\Http\Request;
 use App\Http\Controllers;
 use Illuminate\Support\Facades\App;
+use App\Models\Course;
 
 
 
@@ -21,6 +22,52 @@ class OwnershipController  extends Controller
         }
         return response()->json(['ownership'=>$myownerships], 200);
 
+    }
+    function getAllCoursesnDetails(){
+        $auser = App::make('User');
+        $myownerships = Ownership::where('email','=',$auser->email)->get();
+        if ($myownerships==null){
+            return  response()->json(['error'=>'No data found']);
+        }
+        $result = [];
+        foreach($myownerships as $anownership){
+
+            $anownership['coursedetail'] = $this->getCourseDetails( $anownership['course']);
+            array_push($result, $anownership);
+
+        }
+        return response()->json(['ownership'=>$result], 200);
+    }
+
+    function getCourseDetails($course){
+        $mycourse =  Course::where('course','=',$course)->first();
+        return $mycourse;
+    }
+
+    function getAllAvailableCourses(){
+        $myownerships = Ownership::all();
+        if ($myownerships==null){
+            return  response()->json(['error'=>'No data found']);
+        }
+        return response()->json(['ownership'=>$myownerships], 200);
+
+    }
+
+    function getAllAvailableCoursesnDetails(){
+
+        $myownerships = Ownership::all();
+        if ($myownerships==null){
+            return  response()->json(['error'=>'No data found']);
+        }
+        $result = [];
+        foreach($myownerships as $anownership){
+
+            $anownership['coursedetail'] = $this->getCourseDetails( $anownership['course']);
+            array_push($result, $anownership);
+
+        }
+        
+        return response()->json(['ownership'=>$result], 200);
     }
 
     function removeCourse($course){
@@ -55,7 +102,7 @@ class OwnershipController  extends Controller
         return response()->json(['ownership'=>$myownerships], 200);
 
     }
-    
+
 
     function addAdminToCourse(Request $request){
         $this->validate($request, [

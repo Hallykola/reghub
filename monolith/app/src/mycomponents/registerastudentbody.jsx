@@ -108,8 +108,51 @@ class RegisteraStudentBody extends Component {
     handleSubmit3 = (e)=>{
       e.preventDefault();
       
-      const baseURL = "http://localhost:8003/course/" ;
-      var data = {...this.state.profile ,course:this.state.course,userid:this.state.profile.id};
+      this.setState({stage:4},()=>{
+        console.log('stage 4');
+      })
+
+      // const baseURL = "http://localhost:8003/course/" ;
+      // var data = {...this.state.profile ,course:this.state.course,userid:this.state.profile.id};
+
+      // console.log("see me",baseURL,data);
+      // axios.post(baseURL,data,{headers: {
+      //   'token': `${this.atoken}`
+      // }} ).then((response) => {
+      //   console.log(response);
+      //     toast(`${this.state.profile.name} is now registered`)
+        
+      //     this.setState({stage:4,grouping:response.data.grouping},()=>{
+      //       console.log('stage 4');
+      //     })
+      //   // window.location.href = '/stafflogin'
+    
+      // }).catch((e)=>{
+      //   console.log(e.response);
+
+        
+        
+        // // window.location.href = '/'
+        // if(e.response.data['error']){
+        //   toast(e.response.data['error']);
+        // }else{
+        //   for (let a in e.response.data){
+        //     toast(e.response.data[a.toString()][0]);
+        //     console.log(e.response.data[a.toString()][0]);
+        //    }
+        // }
+     
+
+
+    // })
+      
+    }
+
+    handleSubmit4 = (e)=>{
+      e.preventDefault();
+      
+       const baseURL = "http://localhost:8003/course/" ;
+      var data = {...this.state.profile ,course:this.state.course,userid:this.state.profile.id, license:this.state.myform.license};
 
       console.log("see me",baseURL,data);
       axios.post(baseURL,data,{headers: {
@@ -118,12 +161,10 @@ class RegisteraStudentBody extends Component {
         console.log(response);
           toast(`${this.state.profile.name} is now registered`)
         
-          this.setState({stage:4,grouping:response.data.grouping},()=>{
-            console.log('stage 4');
+          this.setState({stage:5,grouping:response.data.grouping},()=>{
+            console.log('stage 5');
           })
-        // window.location.href = '/stafflogin'
-    
-      }).catch((e)=>{
+           }).catch((e)=>{
         console.log(e.response);
 
         
@@ -131,6 +172,7 @@ class RegisteraStudentBody extends Component {
         // window.location.href = '/'
         if(e.response.data['error']){
           toast(e.response.data['error']);
+          
         }else{
           for (let a in e.response.data){
             toast(e.response.data[a.toString()][0]);
@@ -266,14 +308,33 @@ class RegisteraStudentBody extends Component {
         </form>
       </>);
     }
-
+    showGetLicenseForm=()=>{
+      return(
+<>
+<form onSubmit = {this.handleSubmit4} class="row g-3 text-secondary">
+                
+                <div class="col-md-12">
+                  <label for="inputemail" class="form-label">Enter License number</label>
+                  <input type="text" class="form-control" id="license" onChange={this.handleinput} name="license" value={this.state.myform.license??''}/>
+                </div>
+                <div class="col-6">
+                <button type="button" onClick={()=>{this.setState({stage:1})}} class="btn btn-info btn-lg text-white">Previous </button>
+                </div>
+              
+              
+                <div class="col-6">
+                <button  class="btn btn-info btn-lg text-white">Verify License and Register Student</button>
+                </div>
+              </form></>
+      );
+    }
     showCompletedRegisterationDetails= ()=>{
       return(<>
         <p class="pere text-secondary fs-5 text-success mb-2 fw-bold">SUCCESS</p>
         <h1 class="pere text-secondary fs-5 text-success mb-2 fw-bold">Group {this.state.grouping.group}{this.state.grouping.number}</h1>
         <p>{this.state.profile.name} is now registered to Group {this.state.grouping.group}{this.state.grouping.number} for {this.state.grouping.course}</p>
         <div class="col-6">
-                <button type="button" onClick={()=>{this.setState({stage:1})}} class="btn btn-info btn-lg text-white">Previous </button>
+                <button type="button" onClick={()=>{this.setState({stage:4})}} class="btn btn-info btn-lg text-white">Previous </button>
                 </div>
         <div class="col-6">
         <a href='/studentregister'><button type="button" class="btn btn-info btn-lg text-white">Register A New Student</button></a>
@@ -293,7 +354,8 @@ class RegisteraStudentBody extends Component {
             {this.state.stage==1&&this.showRegisterDetails()}
             {this.state.stage==2&&this.showPasswordDetails()}
             {this.state.stage==3&&this.showStudentDetails()}
-            {this.state.stage==4&&this.showCompletedRegisterationDetails()}
+            {this.state.stage==4&&this.showGetLicenseForm()}
+            {this.state.stage==5&&this.showCompletedRegisterationDetails()}
               </div>
             </section>
             </section>

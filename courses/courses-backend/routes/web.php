@@ -19,10 +19,14 @@ $router->get('/', function () use ($router) {
 
 $router->post('/course/adduser',['middleware'=>'jwt.auth', 'uses'=>'OwnershipController@addNewUsertoCourseRequest']);
 $router->post('/course/getallcourses','OwnershipController@getAllCourses');
+$router->post('/course/allavailable','OwnershipController@getAllAvailableCourses');
 
 
 $router->get('/course','CourseController@read');
 $router->post('/course/all',['middleware'=>'jwt.auth', 'uses'=>'OwnershipController@getAllCourses']);
+$router->post('/course/all-detailed',['middleware'=>'jwt.auth', 'uses'=>'OwnershipController@getAllCoursesnDetails']);
+
+$router->get('/course/{course}/all-assigned','CourseController@readallAssigned');
 
 // $router->post('/course/all',['middleware'=>'jwt.auth', 'uses'=>'OwnershipController@removeCourse']);
 $router->post('/course/addadmin/{course}',['middleware'=>'jwt.auth', 'uses'=>'OwnershipController@addAdminToCourse']);

@@ -31,6 +31,16 @@ class CourseController extends Controller
         return response()->json(['course'=>$mycourse], 200);
     }
 
+    public function readallAssigned(Request $request, $course){
+        $mycourse = Course::where('course','=',$course)->get();
+        $result = [];
+        foreach($mycourse as $acourse){
+            //$acourse['assigned'] = $acourse->assigned;
+            array_push($result, $acourse);
+        }
+        return response()->json(['course'=>$result ], 200);
+    }
+
     public function create(Request $request){
         $this->validate($request, [
             'course' => 'required|unique:courses',

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Grouping;
 
+
 class AssignController extends Controller
 {
     /**
@@ -27,6 +28,7 @@ class AssignController extends Controller
         $course = $request->course;
         $dept = $request->department;
         $userid = $request->userid;
+        $license = $request->license;
 
         // check if student is already registered
         $registered = Grouping::where([['course','=',$course],['userid','=',$userid]]);
@@ -35,7 +37,9 @@ class AssignController extends Controller
         if( $registered->count() > 0){
             return response()->json(['error'=> "User already registered to group ".$details->group.$details->number],406);
         }
-
+        if($this->isLicenseValidnUnused($license)==0){
+            return response()->json(['error'=>'License has been used or is license is not valid, registation failed', 'errormessage'=>'License has been used or is license is not valid'],404);
+        }
         $url = 'http://host.docker.internal:8002/course/pluckgroupnumber';
         $curl_data = ['course' => $course,
         'feature' => $dept,
@@ -68,14 +72,15 @@ class AssignController extends Controller
         $result = json_decode($content);
 
         if(property_exists( $result , "error" )){
-            return response()->json(['error'=>"Could not get group number from courses", "errormessage"=>$result->error],404);
+            return response()->json(['error'=>"Could not get group number from courses. \n Is your department allowed to take this course?", "errormessage"=>$result->error],404);
         }
 
         //server may return error handle it here todo
 
         //if license could not be validated/used
-        if(!useLicense($license)){
-            return response()->json(['error'=>'Could not register student to group', 'message'=>'License has been used or is license is not valid'],201);
+        $value = $this->useLicense($license);
+        if($value==0){
+            return response()->json(['error'=>'Could not use license, Registation failed', 'errormessage'=>'Could not use license'],404);
         }
         $grouping = Grouping::create(['userid'=>$userid, 'course'=>$course, 'group'=> $result->group, 'number'=> $result->number]);
         return response()->json(['grouping'=>$grouping],201);
@@ -85,8 +90,10 @@ class AssignController extends Controller
         return response()->json(['profile'=>'hello'],201);
 
     }
-    public function read(Request $request){
-        return response()->json(['profile'=>'hello'],201);
+    public function getmycourses(Request $request){
+        $registeredcourses = Grouping::where([['userid','=',$request->userid]])->get();
+
+        return response()->json(['courses'=>$registeredcourses],201);
 
     }
     public function delete(Request $request){
@@ -97,22 +104,27 @@ class AssignController extends Controller
 
     //
 
-    function isLicenseValidnUnused(Request $request){
-        $license = $request->license;
-        $url = 'http://host.docker.internal:8002/wp-json/lmfwc/v2/licenses/validate/'.$license;
+    function isLicenseValidnUnused($license){
+
+        $url = 'http://host.docker.internal:8000/wp-json/lmfwc/v2/licenses/validate/'.$license;
         $mycurl = new MyCurl();
         $response = $mycurl->visit($url);
+        //  return response()->json(['url'=>$url,'response'=>$response, 'license'=>$license],201);
+
 
         if (isset($response->data->status)&&$response->data->status == 404){
-            return response()->json(['status'=>false, 'message'=>'License is not valid'],201);
+            return 0;
+            //return response()->json(['status'=>false, 'message'=>'License is not valid'],201);
         }
 
 
         if (isset($response->data->remainingActivations)&&$response->data->timesActivated ==0 && $response->success==1){
-            return response()->json(['status'=>true, 'message'=>'License is valid'],201);
+            return 1;
+            //return response()->json(['status'=>true, 'message'=>'License is valid'],201);
         }
         else{
-            return response()->json(['status'=>false, 'message'=>'License has been used'],201);
+            return 0;
+            //return response()->json(['status'=>false, 'message'=>'License has been used'],201);
 
         }
         // print_r([$response->success,$response->data->timesActivated,$response->data->remainingActivations]);
@@ -121,19 +133,44 @@ class AssignController extends Controller
 
     function useLicense($license){
 
-        $url = 'http://host.docker.internal:8002/wp-json/lmfwc/v2/licenses/activate/'.$license;
+        $url = 'http://host.docker.internal:8000/wp-json/lmfwc/v2/licenses/activate/'.$license;
         $mycurl = new MyCurl();
         $response = $mycurl->visit($url);
 
-        if (isset($response->data->status)&&$response->data->status == 404){
-            return false;
-            // return response()->json(['status'=>false, 'message'=>'License is not valid or has been used'],201);
-        }
-        if (isset($response->data->status)&&$response->data->status > 0&& $response->success==1){
-            return true;
-            // return response()->json(['status'=>true, 'message'=>'License is just validated and now used'],201);
-        }
+        $value = 3; //unimportant value, just a placeholder
 
+        if (isset($response->data->status)&& isset( $response->success)&& $response->data->status > 0&& $response->success==true){
+            $value =  1;
+        }
+        if (isset($response->data->status)&&$response->data->status == 404){
+            $value =  0;
+       }
+        return $value;
+
+
+
+    }
+    function useLicenseRequest(Request $request){
+        $license = $request->license;
+        $url = 'http://host.docker.internal:8000/wp-json/lmfwc/v2/licenses/activate/'.$license;
+        $mycurl = new MyCurl();
+        $response = $mycurl->visit($url);
+        // print_r($response);
+        $value = 3;
+        if (isset($response->data->status)&&$response->data->status == 404){
+             $value =  0;
+            //return response()->json(['status'=>false, 'message'=>'License is not valid or has been used'],201);
+        }
+        if (isset($response->data->status)&& isset( $response->success)&& $response->data->status > 0&& $response->success==true){
+            $value =  1;
+            //return response()->json(['status'=>true, 'message'=>'License is just validated and now used'],201);
+        }
+        if($value==0){
+            return response()->json(['error'=>'Could not register student to group', 'errormessage'=>'Could not use license'],404);
+        }
+        else{
+            return response()->json(['error'=>'Could register student to group', 'message'=>'Success'],201);
+        }
 
 
     }
